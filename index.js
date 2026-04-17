@@ -3,7 +3,7 @@ const weatherApi = "https://api.weather.gov/alerts/active?area="
 
 // Your code here!
 
-// Select elements (match your HTML)
+// Select elements
 const input = document.getElementById('state-input');
 const button = document.getElementById('fetch-alerts');
 const result = document.getElementById('alerts-display');
@@ -12,9 +12,12 @@ const errorDiv = document.getElementById('error-message');
 // Fetch function
 async function fetchWeatherData(state) {
   try {
-    // Clear previous content
+    // Clear previous results
     result.textContent = '';
+
+    // Hide error
     errorDiv.textContent = '';
+    errorDiv.classList.add('hidden');
 
     // Validate input
     if (!state) {
@@ -31,7 +34,7 @@ async function fetchWeatherData(state) {
 
     displayWeather(data);
 
-    // Clear input after success
+    // Clear input
     input.value = '';
 
   } catch (error) {
@@ -43,8 +46,8 @@ async function fetchWeatherData(state) {
 function displayWeather(data) {
   const alerts = data.features;
 
-  result.textContent =
-    `Current watches, warnings, and advisories for ${data.title.split('for ')[1]}: ${alerts.length}`;
+  // ✅ EXACT format required by tests
+  result.textContent = `Weather Alerts: ${alerts.length}`;
 
   alerts.forEach(alert => {
     const p = document.createElement('p');
@@ -56,6 +59,9 @@ function displayWeather(data) {
 // Display error
 function displayError(message) {
   errorDiv.textContent = message;
+
+  // ✅ SHOW error (remove hidden)
+  errorDiv.classList.remove('hidden');
 }
 
 // Button click
